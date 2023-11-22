@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\Paolo\\Documents\\Projects\\Unreal\\ObstacleAssault\\ObstacleAssault\\Source\\ObstacleAssault\\ObstacleAssault.Build.cs",
+		"C:\\Users\\Paolo\\Documents\\Projects\\Unreal\\ObstacleAssault\\ObstacleAssault\\Source\\ObstacleAssault.Target.cs",
+		"C:\\Users\\Paolo\\Documents\\Projects\\Unreal\\ObstacleAssault\\ObstacleAssault\\Source\\ObstacleAssaultEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.2"
+}
