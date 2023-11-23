@@ -18,7 +18,9 @@ void AMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 
-	//UE_LOG(LogTemp, Display, TEXT("Configured Distance moving: %f"), MovedDistance);
+	//FString MyString = GetName();
+
+	//UE_LOG(LogTemp, Display, TEXT("Obj name: %s"), *MyString);
 }
 
 // Called every frame
@@ -26,26 +28,39 @@ void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Move the platform foreward
-		// Get current location
-	FVector CurrentLocation = GetActorLocation();
-		// Add vector to that location
-	CurrentLocation += PlatformVelocity * DeltaTime;
-		//Set the location
-	SetActorLocation(CurrentLocation);
-	//Send platform back if gone to far
-		//Check how far we've moved
-	float PlatformDist = FVector::Dist(StartLocation, CurrentLocation);
-		// Reverse direction of motion if gone too far
-	if(PlatformDist > MovedDistance){
-		float OverShoot = PlatformDist - MovedDistance;
-		UE_LOG(LogTemp, Display, TEXT("Overshoot: %f"), OverShoot);
+	MovePlatform(DeltaTime);
+	RotatePlatform(DeltaTime);
+}
+
+void AMovingPlatform::MovePlatform(float DeltaTime){
+	
+
+	if(ShouldReturn()){
+		//float OverShoot = PlatformDist - MovedDistance;
+		//UE_LOG(LogTemp, Display, TEXT("%s Overshoot: %f"), *(GetName()), OverShoot);
 
 		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
 		StartLocation += MoveDirection * MovedDistance;
 		SetActorLocation(StartLocation);
-		
 		PlatformVelocity *= -1;
+	}
+	else{
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation += PlatformVelocity * DeltaTime;
+		SetActorLocation(CurrentLocation);
 	}
 }
 
+void AMovingPlatform::RotatePlatform(float DeltaTime){
+	//UE_LOG(LogTemp, Display, TEXT("DeltaTime: %f"), DeltaTime);
+	
+	AddActorLocalRotation(RotationVelocity * DeltaTime);
+}
+
+bool AMovingPlatform::ShouldReturn() const{
+	return GetDistanceMoved() > MovedDistance;
+}
+
+float AMovingPlatform::GetDistanceMoved() const{
+	return FVector::Dist(StartLocation, GetActorLocation());
+}
